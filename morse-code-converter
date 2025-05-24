@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Morse Code Encoder/Decoder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            background-color: #e0e0e0;
+            cursor: pointer;
+            border: 1px solid #ccc;
+        }
+        .tab.active {
+            background-color: #fff;
+            border-bottom: none;
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Morse Code Encoder/Decoder</h1>
+        <p style="text-align: center; color: #666; font-size: 12px; margin-bottom: 20px;">
+            Designed by <a href="https://cyberkendra.com" target="_blank" style="color: #4CAF50; text-decoration: none;">cyberkendra.com</a>
+        </p>
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('encode')">Encode</div>
+            <div class="tab" onclick="switchTab('decode')">Decode</div>
+        </div>
+        <div id="encodeTab">
+            <textarea id="encodeInput" placeholder="Enter text to encode..."></textarea>
+            <button onclick="encode()">Encode</button>
+            <textarea id="encodeOutput" readonly placeholder="Morse code will appear here..."></textarea>
+        </div>
+        <div id="decodeTab" style="display:none;">
+            <textarea id="decodeInput" placeholder="Enter Morse code to decode..."></textarea>
+            <button onclick="decode()">Decode</button>
+            <textarea id="decodeOutput" readonly placeholder="Decoded text will appear here..."></textarea>
+        </div>
+    </div>
+
+    <script>
+        const morseCode = {
+            'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.',
+            'G': '--.', 'H': '....', 'I': '..', 'J': '.---', 'K': '-.-', 'L': '.-..',
+            'M': '--', 'N': '-.', 'O': '---', 'P': '.--.', 'Q': '--.-', 'R': '.-.',
+            'S': '...', 'T': '-', 'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-',
+            'Y': '-.--', 'Z': '--..', '0': '-----', '1': '.----', '2': '..---',
+            '3': '...--', '4': '....-', '5': '.....', '6': '-....', '7': '--...',
+            '8': '---..', '9': '----.', '.': '.-.-.-', ',': '--..--', '?': '..--..',
+            "'": '.----.', '!': '-.-.--', '/': '-..-.', '(': '-.--.', ')': '-.--.-',
+            '&': '.-...', ':': '---...', ';': '-.-.-.', '=': '-...-', '+': '.-.-.',
+            '-': '-....-', '_': '..--.-', '"': '.-..-.', '$': '...-..-', '@': '.--.-.',
+            ' ': '/'
+        };
+
+        function encode() {
+            const input = document.getElementById('encodeInput').value.toUpperCase();
+            const output = input.split('').map(char => morseCode[char] || char).join(' ');
+            document.getElementById('encodeOutput').value = output;
+        }
+
+        function decode() {
+            const input = document.getElementById('decodeInput').value;
+            const reverseMorse = Object.fromEntries(Object.entries(morseCode).map(([k, v]) => [v, k]));
+            const output = input.split(' ').map(code => reverseMorse[code] || code).join('');
+            document.getElementById('decodeOutput').value = output;
+        }
+
+        function switchTab(tab) {
+            document.getElementById('encodeTab').style.display = tab === 'encode' ? 'block' : 'none';
+            document.getElementById('decodeTab').style.display = tab === 'decode' ? 'block' : 'none';
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>
